@@ -1,0 +1,136 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{Snake}
+\author{Zaharia Robert Jan}
+
+\begin{document}
+\maketitle
+
+
+\section{Introduction}
+
+\subsection{Context}
+In cadrul acestui proiect se doreste implementarea unui Ai pentru jocul "Snake". Snake este un joc simplist in care tot ce trebuie sa faci este sa mergi in 4 directii si mananci punctele rosii de pe harta, crescand in lungime. Modurile de a pierde sunt fie te lovesti de perete fie de propriul corp.
+\subsection{Specificatii}
+Pentru a crea acest AI vom folosi 2 algoritmi de cautare: A* si DFS, care vor face sarpele sa ajung la obiectivul sau , marul, fara a iesi de pe harta sau a se lovi de el insasi. Pentru a ilustra jocul vom folosi un framework care va folosi pygame pentru grafica iar ca si limbaj Python.
+
+\subsection{Rulare}
+Pentru A* se va deschide terminal in fisierul cu proiect si se va rula in comanda python3 agent2.py . 
+Iar pentru DFS se va rula comanda python3 agent.py
+
+
+\section{Algoritmii}
+
+Inainte de a aplica ambii algoritmi trebuie mai intai sa cream 3 functii: IsgoalState, getSuccesors,getStartstate
+
+\subsection{A*}
+A* este un algoritm de cautare care se bazează pe diferite euristici pentru a obține optimalitate  și pentru a completa problema. Când un algoritm de căutare este optim, înseamnă că este garantată găsirea celei mai bune soluții posibile, în cazul nostru cea mai scurtă cale către marul rosul al Snake-ului. Cea mai buna solutie posibila este aleasa prin maparea intregii harti cu o valoare aleasa in functie de distanta fata de pozitia de start a sarpelui cat si pozitia marului. In cadrul A*-ului implementat am folosit euristica manhattan pentru a determina distanta de la pozitia snake-ului pana la mar.
+
+
+\subsection{DFS}
+DFS este un algoritm pentru parcurgerea sau căutarea structurilor de date arborescente sau grafice. Algoritmul începe de la nodul rădăcină (selectând un nod arbitrar ca nod rădăcină în cazul unui grafic) și explorează cât mai departe posibil de-a lungul fiecărei ramuri înainte de a reveni. In cadrul acestui algortim este necesară o stiva pentru a ține evidența nodurilor descoperite până acum de-a lungul unei ramuri specificate, ceea ce ajută la întoarcerea graficului. Din pacate DFS este un algoritm inferior  A*. 
+
+
+
+\section{Testare}
+
+
+Mai intai vom testa A*. A* are un stil destul de simplu intrucat acesta merge cat mai  dreapt pana cand se apropie de mar apoi incepe sa mearga pe "diagonala" pana ajunge la mar. Cand sarpele ajunge la o marime considerabil incepe sa mearga cat mai aproape de corpul sau lasand in schimba sansa destul de mare sa fie de propria coada.
+
+Scorul maxim atins de Snake folosind A* este 74.
+\begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth]{a.jpg}
+\caption{\label{fig:a}Traseul snake-ului folosind A*.}
+\end{figure}
+
+
+Dfs este arata putin mai ciudat. in loc sa incerce sa mearga oX sau pe oY pana cand vede intr-o directie dreapta marul el alege sa tot mearga pe "diagonala" pana isi atinge scopul. Desi este mai simplu de implementat si cu mai putin cod DFS a obtinut un scor destul de bun problema sa principala fiind ca reusea foarte des sa se blocheze.
+
+Totusi DFS a reusit sa obtina un scor de 57
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth]{dfs.jpg}
+\caption{\label{fig:dfs}Traseul snake-ului folosind Dfs.}
+\end{figure}
+
+
+\section{Comparatia algoritmilor}
+
+In cadrul capitolului anterior se pot vedea diferente subtile intre A* si DFS dar din pacate A* pare sa fie mai eficient prin implementarea sa. Insa pentru rezolvarea acestui Joc de snake se pot folosi multiplii algoritmi diferiti A* nefiind  in toate cazurile cel mai bun. 
+Prima varianta de rezolvare alternativa ar fi realizarea unui ciclu hamiltonian. Aceasta solutie desi plictisitoare este cea mai sigura si cea are asigura victoria jucatorului. Un mare dezavantaj al acestui algoritm este timpul mare de rezolvare al problemei. In schimb daca nu iei timpul de rezolvare este cea mai buna solutie
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth]{1_QE2YLgLih-umatoP-v2CVg.png}
+\caption{\label{fig:dfs}Traseul snake-ului Cu un ciclu hamiltonian.}
+\end{figure}
+
+
+
+
+
+
+O alta incercare pe care am intalnit-o este realizarea unui Snake care reuseste sa invete singur prin Deep Q learning. Multa lume ar considera acesta un adevarat Ai deoarece invata sa joace singur. Aceasta metoda este una destul de eficienta dar putin mai inceata deoarece Snake-ul trebuie sa invete multe miscari pana incepe sa acumuleze puncte
+
+
+
+
+
+
+\section{Concluzie}
+    Snake pare un joc simplist insa crearea unui Ai pentru el sigur nu este usor. Cea mai mare provocare este incercarea de al face sa nu se mai loveasca de propria coada insa cu sacrificarea eficientei sau poate cu folosirea unui algoritm mai eficient se poate crea un AI care sa joace perfect snake
+
+
+
+\section{Cod}
+
+\subsection{getSuccesor}
+  
+        \begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth]{succesors.png}
+\caption{\label{fig:dfs}.}
+\end{figure}
+        
+        FUnctie de get succesors returneaza toate pozitiile pe care le poate lua snake-ul tinand cont atat de pozitia snake-ului. Aceasta returneaza urmatoarea locatie, directia si costul acestei miscari. (fig. 4)
+
+
+\subsection{getStartState}
+        \begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth]{start.png}
+\caption{\label{fig:dfs}.}
+\end{figure}
+
+        Aceasta functii returneaza coordonatele capului snake-ului. (fig. 5)
+\subsection{isGoalState}
+        \begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth]{goal.png}
+\caption{\label{fig:dfs}.}
+\end{figure}
+
+  
+  
+            Aceasta functiie verifica daca capul snake-ului este pe mar(fig. 6)
+            
+
+
+
+
+\end{document}
